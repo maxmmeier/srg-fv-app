@@ -1,3 +1,7 @@
-export default function Apply() {
-  return <>Antrag</>;
+export function Apply() {
+  return (
+    <>
+      <div>Content!</div>
+    </>
+  );
 }
