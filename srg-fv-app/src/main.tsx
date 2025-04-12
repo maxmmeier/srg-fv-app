@@ -4,6 +4,9 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import { Apply } from "./features/apply/Apply.tsx";
 import { Page } from "./Page.tsx";
 
+import i18n from "./i18n.ts";
+import "./i18n.ts";
+
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
     <Routes>
@@ -20,7 +23,7 @@ createRoot(document.getElementById("root")!).render(
       <Route
         path="/antrag"
         element={
-          <Page header="Mitgliedsantrag">
+          <Page header={i18n.t("applyForMembership")}>
             <Apply />
           </Page>
         }

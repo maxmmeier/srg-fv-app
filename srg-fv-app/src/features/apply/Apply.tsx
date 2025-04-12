@@ -1,7 +1,10 @@
+import { useTranslation } from "react-i18next";
+
 export function Apply() {
+  const { t } = useTranslation();
   return (
     <>
-      <div>Content!</div>
+      <div>{t("applyForMembership")}</div>
     </>
   );
 }
