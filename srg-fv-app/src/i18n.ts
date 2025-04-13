@@ -28,6 +28,7 @@ i18n
             "zipPlaceholder" : "Bitte PLZ eintragen",
             "cityPlaceholder" : "Bitte Ort eintragen",
             "submit" : "Mitgliedschaft beantragen",
+            "signature" : "Unterschrift",
         }
       }
     }

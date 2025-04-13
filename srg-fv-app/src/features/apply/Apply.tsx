@@ -1,7 +1,16 @@
+import { useRef } from "react";
 import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
+import SignatureCanvas from "react-signature-canvas";
+import { useContainerDimensions } from "./WrapperDimensions";
+
+import "./Apply.css";
 
 export function Apply() {
+  const canvasWrapper = useRef(null);
+
+  const { width, height } = useContainerDimensions(canvasWrapper);
+
   const { t } = useTranslation();
   return (
     <>
@@ -81,6 +90,19 @@ export function Apply() {
               </InputGroup>
             </Form.Group>
           </Col>
+        </Row>
+
+        <Row>
+          <Form.Group className="mb-3">
+            <Form.Label>{t("signature")}</Form.Label>
+            <div className="input-group">
+              <div className="form-control signature" ref={canvasWrapper}>
+                <SignatureCanvas
+                  canvasProps={{ width: width, height: height }}
+                ></SignatureCanvas>
+              </div>
+            </div>
+          </Form.Group>
         </Row>
 
         <Button variant="primary" type="submit" className="float-end">
