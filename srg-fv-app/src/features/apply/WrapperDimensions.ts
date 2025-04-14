@@ -28,9 +28,7 @@ export const useContainerDimensions = (myRef: any) => {
           .getPropertyValue("padding-right")
           .replace("px", ""),
       );
-  
-      console.log(paddingTop, paddingBottom, paddingLeft, paddingRight);
-  
+    
       const getDimensions = () => ({
         width: (myRef.current.offsetWidth as number) - paddingLeft - paddingRight,
         height:
