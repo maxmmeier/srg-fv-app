@@ -18,13 +18,19 @@ createRoot(document.getElementById("root")!).render(
           </Page>
         }
       />
-    </Routes>
-    <Routes>
       <Route
-        path="/antrag"
+        path="antrag"
         element={
           <Page header={i18n.t("applyForMembership")}>
             <Apply />
+          </Page>
+        }
+      />
+      <Route
+        path="*"
+        element={
+          <Page header="Hello World">
+            <App />
           </Page>
         }
       />
