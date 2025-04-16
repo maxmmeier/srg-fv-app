@@ -1,31 +1,32 @@
-import { MouseEvent, useRef, useState } from "react";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import { useTranslation } from "react-i18next";
-import SignatureCanvas from "react-signature-canvas";
-import { useContainerDimensions } from "./WrapperDimensions";
+import { FormEvent, useRef, useState } from 'react';
+import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
+import { useTranslation } from 'react-i18next';
+import SignatureCanvas from 'react-signature-canvas';
+import { useContainerDimensions } from './WrapperDimensions';
 
-import "./Apply.css";
-import { formatIban } from "./Iban";
+import './Apply.css';
+import { formatIban, validateIban } from './Iban';
 
 export function Apply() {
-  const [lastName, setLastName] = useState("");
-  const [firstName, setFirstName] = useState("");
-  const [email, setEmail] = useState("");
-  const [dateOfBirth, setDateOfBirth] = useState("");
-  const [street, setStreet] = useState("");
-  const [zip, setZip] = useState("");
-  const [city, setCity] = useState("");
+  const [validated, setValidated] = useState(false);
+  const [lastName, setLastName] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [email, setEmail] = useState('');
+  const [dateOfBirth, setDateOfBirth] = useState('');
+  const [street, setStreet] = useState('');
+  const [zip, setZip] = useState('');
+  const [city, setCity] = useState('');
   const [isMemberNotAccountHolder, setIsMemberNotAccountHolder] =
     useState(false);
-  const [lastNameSepa, setLastNameSepa] = useState("");
-  const [firstNameSepa, setFirstNameSepa] = useState("");
-  const [streetSepa, setStreetSepa] = useState("");
-  const [zipSepa, setZipSepa] = useState("");
-  const [citySepa, setCitySepa] = useState("");
-  const [bank, setBank] = useState("");
-  const [bic, setBic] = useState("");
-  const [iban, setIban] = useState("");
-  const [mandate, setMandate] = useState("");
+  const [lastNameSepa, setLastNameSepa] = useState('');
+  const [firstNameSepa, setFirstNameSepa] = useState('');
+  const [streetSepa, setStreetSepa] = useState('');
+  const [zipSepa, setZipSepa] = useState('');
+  const [citySepa, setCitySepa] = useState('');
+  const [bank, setBank] = useState('');
+  const [bic, setBic] = useState('');
+  const [iban, setIban] = useState('');
+  const [mandate, setMandate] = useState('');
 
   const canvasWrapperMember = useRef(null);
   const canvasWrapperSepa = useRef(null);
@@ -33,11 +34,20 @@ export function Apply() {
   const sepaSignature = useContainerDimensions(canvasWrapperSepa);
   const memberSignatureCanvas = useRef<SignatureCanvas>(null);
   const sepaSignatureCanvas = useRef<SignatureCanvas>(null);
+  const [isMemberSignatureSet, setIsMemberSignatureSet] = useState(false);
+  const [isSepaSignatureSet, setIsSepaSignatureSet] = useState(false);
 
   const { t } = useTranslation();
 
-  function onSubmit(e: MouseEvent<HTMLButtonElement>) {
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
+    const form = e.currentTarget;
     e.preventDefault();
+    e.stopPropagation();
+    setValidated(true);
+
+    if (form.checkValidity() === false) {
+      return;
+    }
 
     var result = {
       lastName,
@@ -49,7 +59,7 @@ export function Apply() {
       city,
       memberSignature: memberSignatureCanvas.current
         ?.getCanvas()
-        .toDataURL("image/png"),
+        .toDataURL('image/png'),
       isMemberNotAccountHolder,
       lastNameSepa,
       firstNameSepa,
@@ -62,150 +72,185 @@ export function Apply() {
       mandate,
       sepaSignature: sepaSignatureCanvas.current
         ?.getCanvas()
-        .toDataURL("image/png"),
+        .toDataURL('image/png'),
     };
 
     console.log(result);
   }
-
   return (
     <>
-      <Form>
+      <Form noValidate onSubmit={(e) => onSubmit(e)}>
         <Row>
-          <div className="mb-3">{t("applyForMembershipIntro")}</div>
+          <div className='mb-3'>{t('applyForMembershipIntro')}</div>
         </Row>
 
         <Row xs={1} sm={1} md={2}>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("lastname")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('lastname')}</Form.Label>
               <Form.Control
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
-                type="text"
-                placeholder={t("lastnamePlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !lastName}
+                type='text'
+                placeholder={t('lastnamePlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('lastnameFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("firstname")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('firstname')}</Form.Label>
               <Form.Control
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
-                type="text"
-                placeholder={t("firstnamePlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !firstName}
+                type='text'
+                placeholder={t('firstnamePlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('firstnameFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
 
         <Row xs={1} sm={1} md={2}>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("email")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('email')}</Form.Label>
               <Form.Control
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                type="text"
-                placeholder={t("emailPlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !email}
+                type='text'
+                placeholder={t('emailPlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('emailFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("dateOfBirth")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('dateOfBirth')}</Form.Label>
               <Form.Control
                 value={dateOfBirth}
                 onChange={(e) => setDateOfBirth(e.target.value)}
-                type="date"
-                required
-              ></Form.Control>
+                isInvalid={
+                  validated &&
+                  (!dateOfBirth ||
+                    new Date(dateOfBirth) >
+                      new Date(
+                        new Date().getFullYear() - 10,
+                        new Date().getMonth(),
+                        new Date().getDay(),
+                      ))
+                }
+                type='date'
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('dateOfBirthFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
 
         <Row xs={1} sm={1} md={2}>
           <Col>
-            {" "}
-            <Form.Group className="mb-3">
-              <Form.Label>{t("street")}</Form.Label>
+            {' '}
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('street')}</Form.Label>
               <Form.Control
                 value={street}
                 onChange={(e) => setStreet(e.target.value)}
-                type="text"
-                placeholder={t("streetPlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !street}
+                type='text'
+                placeholder={t('streetPlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('streetFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("zipAndCity")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('zipAndCity')}</Form.Label>
               <InputGroup>
                 <Form.Control
                   value={zip}
                   onChange={(e) => setZip(e.target.value)}
-                  type="number"
-                  placeholder={t("zipPlaceholder")}
-                  required
-                ></Form.Control>
+                  isInvalid={validated && !zip}
+                  type='number'
+                  placeholder={t('zipPlaceholder')}
+                  required></Form.Control>
                 <Form.Control
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
-                  type="text"
-                  placeholder={t("cityPlaceholder")}
-                  required
-                ></Form.Control>
+                  isInvalid={validated && !city}
+                  type='text'
+                  placeholder={t('cityPlaceholder')}
+                  required></Form.Control>
+                <Form.Control.Feedback type='invalid'>
+                  {t('zipAndCityFeedback')}
+                </Form.Control.Feedback>
               </InputGroup>
             </Form.Group>
           </Col>
         </Row>
 
         <Row>
-          <Form.Group className="mb-3">
-            <Form.Label>{t("signatureMemberOrParent")}</Form.Label>
-            <div className="input-group">
-              <div className="form-control signature" ref={canvasWrapperMember}>
+          <Form.Group className='mb-3'>
+            <Form.Label>{t('signatureMemberOrParent')}</Form.Label>
+            <div className='input-group'>
+              <div
+                className={
+                  'form-control signature ' +
+                  (validated && !isMemberSignatureSet ? 'is-invalid' : '')
+                }
+                ref={canvasWrapperMember}>
                 <SignatureCanvas
                   ref={memberSignatureCanvas}
                   canvasProps={{
                     width: memberSignature.width,
                     height: memberSignature.height,
                   }}
-                ></SignatureCanvas>
+                  onEnd={() => {
+                    setIsMemberSignatureSet(
+                      (memberSignatureCanvas.current?.isEmpty() ?? true) ===
+                        false,
+                    );
+                  }}></SignatureCanvas>
               </div>
             </div>
           </Form.Group>
         </Row>
 
         <Row>
-          <h3>{t("Sepa")}</h3>
+          <h3>{t('Sepa')}</h3>
         </Row>
 
         <Row>
-          <p>{t("SepaIntro")}</p>
+          <p>{t('SepaIntro')}</p>
           <p>
-            <small>{t("SepaNotice")}</small>
+            <small>{t('SepaNotice')}</small>
           </p>
           <p>
-            <strong>{t("SepaInfos")}</strong>
+            <strong>{t('SepaInfos')}</strong>
           </p>
         </Row>
 
         <Row>
-          <Form.Group className="mb-3">
+          <Form.Group className='mb-3'>
             <Form.Check
               defaultChecked={isMemberNotAccountHolder}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
                 setIsMemberNotAccountHolder(e.target.checked)
               }
-              type="checkbox"
-              label={t("MemberNotAccountHolder")}
-            ></Form.Check>
+              type='checkbox'
+              label={t('MemberNotAccountHolder')}></Form.Check>
           </Form.Group>
         </Row>
 
@@ -213,63 +258,85 @@ export function Apply() {
           <>
             <Row xs={1} sm={1} md={2}>
               <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("lastname")}</Form.Label>
+                <Form.Group className='mb-3'>
+                  <Form.Label>{t('lastname')}</Form.Label>
                   <Form.Control
                     value={lastNameSepa}
                     onChange={(e) => setLastNameSepa(e.target.value)}
-                    type="text"
-                    placeholder={t("lastnamePlaceholder")}
-                    required
-                  ></Form.Control>
+                    isInvalid={
+                      validated && isMemberNotAccountHolder && !lastNameSepa
+                    }
+                    type='text'
+                    placeholder={t('lastnamePlaceholder')}
+                    required></Form.Control>
+                  <Form.Control.Feedback type='invalid'>
+                    {t('lastnameFeedback')}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("firstname")}</Form.Label>
+                <Form.Group className='mb-3'>
+                  <Form.Label>{t('firstname')}</Form.Label>
                   <Form.Control
                     value={firstNameSepa}
                     onChange={(e) => setFirstNameSepa(e.target.value)}
-                    type="text"
-                    placeholder={t("firstnamePlaceholder")}
-                    required
-                  ></Form.Control>
+                    isInvalid={
+                      validated && isMemberNotAccountHolder && !firstNameSepa
+                    }
+                    type='text'
+                    placeholder={t('firstnamePlaceholder')}
+                    required></Form.Control>
+                  <Form.Control.Feedback type='invalid'>
+                    {t('firstnameFeedback')}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
             </Row>
 
             <Row xs={1} sm={1} md={2}>
               <Col>
-                {" "}
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("street")}</Form.Label>
+                {' '}
+                <Form.Group className='mb-3'>
+                  <Form.Label>{t('street')}</Form.Label>
                   <Form.Control
                     value={streetSepa}
                     onChange={(e) => setStreetSepa(e.target.value)}
-                    type="text"
-                    placeholder={t("streetPlaceholder")}
-                    required
-                  ></Form.Control>
+                    isInvalid={
+                      validated && isMemberNotAccountHolder && !streetSepa
+                    }
+                    type='text'
+                    placeholder={t('streetPlaceholder')}
+                    required></Form.Control>
+                  <Form.Control.Feedback type='invalid'>
+                    {t('streetFeedback')}
+                  </Form.Control.Feedback>
                 </Form.Group>
               </Col>
               <Col>
-                <Form.Group className="mb-3">
-                  <Form.Label>{t("zipAndCity")}</Form.Label>
+                <Form.Group className='mb-3'>
+                  <Form.Label>{t('zipAndCity')}</Form.Label>
                   <InputGroup>
                     <Form.Control
                       value={zipSepa}
                       onChange={(e) => setZipSepa(e.target.value)}
-                      type="number"
-                      placeholder={t("zipPlaceholder")}
-                      required
-                    ></Form.Control>
+                      isInvalid={
+                        validated && isMemberNotAccountHolder && !zipSepa
+                      }
+                      type='number'
+                      placeholder={t('zipPlaceholder')}
+                      required></Form.Control>
                     <Form.Control
                       value={citySepa}
                       onChange={(e) => setCitySepa(e.target.value)}
-                      type="text"
-                      placeholder={t("cityPlaceholder")}
-                      required
-                    ></Form.Control>
+                      isInvalid={
+                        validated && isMemberNotAccountHolder && !citySepa
+                      }
+                      type='text'
+                      placeholder={t('cityPlaceholder')}
+                      required></Form.Control>
+                    <Form.Control.Feedback type='invalid'>
+                      {t('zipAndCityFeedback')}
+                    </Form.Control.Feedback>
                   </InputGroup>
                 </Form.Group>
               </Col>
@@ -281,84 +348,101 @@ export function Apply() {
 
         <Row xs={1} sm={1} md={2}>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("bank")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('bank')}</Form.Label>
               <Form.Control
                 value={bank}
                 onChange={(e) => setBank(e.target.value)}
-                type="text"
-                placeholder={t("bankPlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !bank}
+                type='text'
+                placeholder={t('bankPlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('bankFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("bic")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('bic')}</Form.Label>
               <Form.Control
                 value={bic}
                 onChange={(e) => setBic(e.target.value)}
-                type="text"
-                placeholder={t("bicPlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !bic}
+                type='text'
+                placeholder={t('bicPlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('bicFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
 
         <Row xs={1} sm={1} md={2}>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("iban")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('iban')}</Form.Label>
               <Form.Control
                 value={iban}
                 onChange={(e) => {
                   setIban(formatIban(e.target.value));
                 }}
-                type="text"
-                placeholder={t("ibanPlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !validateIban(iban)}
+                type='text'
+                placeholder={t('ibanPlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('ibanFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
           <Col>
-            <Form.Group className="mb-3">
-              <Form.Label>{t("mandate")}</Form.Label>
+            <Form.Group className='mb-3'>
+              <Form.Label>{t('mandate')}</Form.Label>
               <Form.Control
                 value={mandate}
                 onChange={(e) => setMandate(e.target.value)}
-                type="text"
-                placeholder={t("mandatePlaceholder")}
-                required
-              ></Form.Control>
+                isInvalid={validated && !mandate}
+                type='text'
+                placeholder={t('mandatePlaceholder')}
+                required></Form.Control>
+              <Form.Control.Feedback type='invalid'>
+                {t('mandateFeedback')}
+              </Form.Control.Feedback>
             </Form.Group>
           </Col>
         </Row>
 
         <Row>
-          <Form.Group className="mb-3">
-            <Form.Label>{t("signatureSepa")}</Form.Label>
-            <div className="input-group">
-              <div className="form-control signature" ref={canvasWrapperSepa}>
+          <Form.Group className='mb-3'>
+            <Form.Label>{t('signatureSepa')}</Form.Label>
+            <div className='input-group'>
+              <div
+                className={
+                  'form-control signature ' +
+                  (validated && !isSepaSignatureSet ? 'is-invalid' : '')
+                }
+                ref={canvasWrapperSepa}>
                 <SignatureCanvas
                   ref={sepaSignatureCanvas}
                   canvasProps={{
                     width: sepaSignature.width,
                     height: sepaSignature.height,
                   }}
-                ></SignatureCanvas>
+                  onEnd={() => {
+                    setIsSepaSignatureSet(
+                      (sepaSignatureCanvas.current?.isEmpty() ?? true) ===
+                        false,
+                    );
+                  }}></SignatureCanvas>
               </div>
             </div>
           </Form.Group>
         </Row>
 
-        <Button
-          variant="primary"
-          type="submit"
-          className="float-end"
-          onClick={(e) => onSubmit(e)}
-        >
-          {t("submit")}
+        <Button variant='primary' type='submit' className='float-end'>
+          {t('submit')}
         </Button>
       </Form>
     </>

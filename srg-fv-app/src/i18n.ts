@@ -43,6 +43,16 @@ i18n
           "ibanPlaceholder" : "Bitte IBAN eintragen",
           "mandate" : "Mandatsreferenz",
           "mandatePlaceholder" : "Bitte Mandatsreferenz eingeben",
+          "lastnameFeedback" : "Bitte Nachnamen eintragen!",
+          "firstnameFeedback" : "Bitte Vornamen eintragen!",
+          "emailFeedback" : "Bitte E-Mail Adresse eintragen!",
+          "dateOfBirthFeedback" : "Bitte Geburtstag eintragen!",
+          "streetFeedback" : "Bitte Straße eintragen!",
+          "zipAndCityFeedback" : "Bitte PLZ / Ort eintragen!",
+          "bankFeedback" : "Bitte Namen der Bank eintragen!",
+          "bicFeedback" : "Bitte BIC eintragen!",
+          "ibanFeedback" : "Bitte IBAN eintragen!",
+          "mandateFeedback" : "Bitte Mandatsreferenz eintragen!",
         }
       }
     }

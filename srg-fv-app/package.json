@@ -10,8 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@types/iban": "^0.0.35",
     "bootstrap": "^5.3.5",
     "i18next": "^24.2.3",
+    "iban": "^0.0.14",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
