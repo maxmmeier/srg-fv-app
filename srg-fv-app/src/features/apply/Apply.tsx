@@ -207,7 +207,7 @@ export function Apply() {
             <div className='input-group'>
               <div
                 className={
-                  'form-control signature ' +
+                  'form-control signature position-relative ' +
                   (validated && !isMemberSignatureSet ? 'is-invalid' : '')
                 }
                 ref={canvasWrapperMember}>
@@ -223,6 +223,18 @@ export function Apply() {
                         false,
                     );
                   }}></SignatureCanvas>
+                <Button
+                  className='clear-signature'
+                  variant='secondary'
+                  onClick={() => {
+                    memberSignatureCanvas.current?.clear();
+                    setIsMemberSignatureSet(
+                      (memberSignatureCanvas.current?.isEmpty() ?? true) ===
+                        false,
+                    );
+                  }}>
+                  <i className='bi bi-eraser'></i>
+                </Button>
               </div>
               <Form.Control.Feedback type='invalid'>
                 {t('signatureFeedback')}
@@ -423,7 +435,7 @@ export function Apply() {
             <div className='input-group'>
               <div
                 className={
-                  'form-control signature ' +
+                  'form-control signature position-relative ' +
                   (validated && !isSepaSignatureSet ? 'is-invalid' : '')
                 }
                 ref={canvasWrapperSepa}>
@@ -439,6 +451,18 @@ export function Apply() {
                         false,
                     );
                   }}></SignatureCanvas>
+                <Button
+                  className='clear-signature'
+                  variant='secondary'
+                  onClick={() => {
+                    sepaSignatureCanvas.current?.clear();
+                    setIsSepaSignatureSet(
+                      (sepaSignatureCanvas.current?.isEmpty() ?? true) ===
+                        false,
+                    );
+                  }}>
+                  <i className='bi bi-eraser'></i>
+                </Button>
               </div>
               <Form.Control.Feedback type='invalid'>
                 {t('signatureFeedback')}
