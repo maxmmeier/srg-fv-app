@@ -224,6 +224,9 @@ export function Apply() {
                     );
                   }}></SignatureCanvas>
               </div>
+              <Form.Control.Feedback type='invalid'>
+                {t('signatureFeedback')}
+              </Form.Control.Feedback>
             </div>
           </Form.Group>
         </Row>
@@ -437,6 +440,9 @@ export function Apply() {
                     );
                   }}></SignatureCanvas>
               </div>
+              <Form.Control.Feedback type='invalid'>
+                {t('signatureFeedback')}
+              </Form.Control.Feedback>
             </div>
           </Form.Group>
         </Row>
