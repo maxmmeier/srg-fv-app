@@ -11,14 +11,19 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.5",
+    "bootstrap-icons": "^1.11.3",
     "i18next": "^24.2.3",
+    "iban": "^0.0.14",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
     "react-dom": "^19.0.0",
-    "react-router": "^7.5.0"
+    "react-i18next": "^15.4.1",
+    "react-router": "^7.5.0",
+    "react-signature-canvas": "^1.1.0-alpha.2"
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
+    "@types/iban": "^0.0.35",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
