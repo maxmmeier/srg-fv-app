@@ -10,7 +10,6 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@types/iban": "^0.0.35",
     "bootstrap": "^5.3.5",
     "bootstrap-icons": "^1.11.3",
     "i18next": "^24.2.3",
@@ -24,6 +23,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.24.0",
+    "@types/iban": "^0.0.35",
     "@types/react": "^19.0.10",
     "@types/react-dom": "^19.0.4",
     "@vitejs/plugin-react": "^4.3.4",
