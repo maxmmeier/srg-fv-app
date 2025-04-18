@@ -3,9 +3,10 @@ import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import SignatureCanvas from 'react-signature-canvas';
 import { useContainerDimensions } from './WrapperDimensions';
-
 import './Apply.css';
 import { formatIban, validateIban } from './Iban';
+import axios from 'axios';
+import { applyMembershipOptions } from '../../../../srg-fv-contract/applyOptions';
 
 export function Apply() {
   const [validated, setValidated] = useState(false);
@@ -73,9 +74,9 @@ export function Apply() {
       sepaSignature: sepaSignatureCanvas.current
         ?.getCanvas()
         .toDataURL('image/png'),
-    };
+    } as applyMembershipOptions;
 
-    console.log(result);
+    axios.post(import.meta.env.VITE_BACKEND_URL + 'membership/apply', result);
   }
   return (
     <>

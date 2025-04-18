@@ -1,4 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
+import { applyMembershipOptions } from '../../../srg-fv-contract/applyOptions';
 
 export const applyMembership = (
   req: Request,
@@ -6,7 +7,7 @@ export const applyMembership = (
   next: NextFunction,
 ) => {
   try {
-    // const { name } = req.body;
+    const options = req.body as applyMembershipOptions;
 
     res.status(201).json();
   } catch (error) {
