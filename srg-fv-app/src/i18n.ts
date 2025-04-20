@@ -56,6 +56,8 @@ i18n.use(initReactI18next).init({
         ibanFeedback: 'Bitte IBAN eintragen!',
         mandateFeedback: 'Bitte Mandatsreferenz eintragen!',
         signatureFeedback: 'Bitte Unterschreiben!',
+        login: 'Login',
+        logout: 'Logout',
       },
     },
   },
