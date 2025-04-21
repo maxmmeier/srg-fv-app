@@ -1,18 +1,9 @@
-import { useContext } from 'react';
-import {
-  Container,
-  Nav,
-  Navbar as BootstrapNavbar,
-  Button,
-} from 'react-bootstrap';
+import { Container, Nav, Navbar as BootstrapNavbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import useKeycloak from '../features/auth/useKeycloak';
+import { KeycloakNav } from './KeycloakNav';
 
 export function Navbar() {
   const { t } = useTranslation();
-  const { keycloak, authenticated, isLoading } = useKeycloak();
-
-  console.log(keycloak);
 
   return (
     <>
@@ -27,28 +18,7 @@ export function Navbar() {
               <Nav.Link href='antrag'>{t('applyForMembership')}</Nav.Link>
             </Nav>
           </BootstrapNavbar.Collapse>
-
-          {isLoading ? (
-            <></>
-          ) : (
-            <>
-              {authenticated ? (
-                <Button
-                  onClick={() => {
-                    keycloak?.logout();
-                  }}>
-                  {t('logout')}
-                </Button>
-              ) : (
-                <Button
-                  onClick={() => {
-                    keycloak?.login();
-                  }}>
-                  {t('login')}
-                </Button>
-              )}
-            </>
-          )}
+          <KeycloakNav></KeycloakNav>
         </Container>
       </BootstrapNavbar>
     </>
