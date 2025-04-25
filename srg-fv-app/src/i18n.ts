@@ -14,7 +14,7 @@ i18n.use(initReactI18next).init({
         supportAssociationSrgStuttgart: 'Förderverein SRG Stuttgart',
         applyForMembershipIntro:
           'Hiermit erkläre ich meinen Beitritt zum Förderverein der Schiedsrichter-Gruppe Stuttgart e.V.\nDer Mitgliedsbeitrag beträgt 30,- EUR pro Jahr. Bei Minderjährigen ist die Unterschrift des/der Erziehungsberechtigen erforderlich.',
-        lastname: 'Name',
+        lastname: 'Nachname',
         lastnamePlaceholder: 'Bitte Nachname eintragen',
         firstname: 'Vorname',
         firstnamePlaceholder: 'Bitte Vorname eintragen',
@@ -58,6 +58,9 @@ i18n.use(initReactI18next).init({
         signatureFeedback: 'Bitte Unterschreiben!',
         login: 'Login',
         logout: 'Logout',
+        members: 'Mitglieder',
+        pageNotFound: 'Die Seite wurde nicht gefunden',
+        id: '#',
       },
     },
   },

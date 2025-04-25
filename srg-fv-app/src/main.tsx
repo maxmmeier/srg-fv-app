@@ -7,6 +7,8 @@ import { Page } from './shared/Page.tsx';
 import i18n from './i18n.ts';
 import './i18n.ts';
 import { KeycloakProvider } from './features/auth/KeycloakProvider.tsx';
+import { Members } from './features/members/Members.tsx';
+import { NotFound } from './shared/NotFound.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <KeycloakProvider>
@@ -21,6 +23,14 @@ createRoot(document.getElementById('root')!).render(
           }
         />
         <Route
+          path='mitglieder'
+          element={
+            <Page header={i18n.t('members')}>
+              <Members />
+            </Page>
+          }
+        />
+        <Route
           path='antrag'
           element={
             <Page header={i18n.t('applyForMembership')}>
@@ -31,8 +41,8 @@ createRoot(document.getElementById('root')!).render(
         <Route
           path='*'
           element={
-            <Page header='Hello World'>
-              <App />
+            <Page header=':('>
+              <NotFound />
             </Page>
           }
         />

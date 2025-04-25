@@ -6,7 +6,7 @@ import { useContainerDimensions } from './WrapperDimensions';
 import './Apply.css';
 import { formatIban, validateIban } from './Iban';
 import axios from 'axios';
-import { applyMembershipOptions } from '../../../../srg-fv-contract/applyOptions';
+import { applyMembershipOptions } from '../../../../srg-fv-contract/applyMembershipOptions';
 
 export function Apply() {
   const [validated, setValidated] = useState(false);

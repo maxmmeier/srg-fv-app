@@ -1,38 +1,33 @@
-import mysql, { PoolOptions, RowDataPacket } from 'mysql2';
-import { applyMembershipOptions } from '../../../srg-fv-contract/applyOptions';
+import { RowDataPacket } from 'mysql2';
+import { applyMembershipOptions } from '../../../srg-fv-contract/applyMembershipOptions';
+import { getConnection } from './logicBase';
 
 export async function addMembership(options: applyMembershipOptions) {
-  const access: PoolOptions = {
-    user: process.env.DATABASE_USER,
-    password: process.env.DATABASE_PASSWORD,
-    database: process.env.DATABASE_SCHEMA,
-    timezone: '+00:00',
-  };
+  const connection = getConnection();
 
-  const connection = mysql.createPool(access);
-
-  const sql = `insert into membership 
-      (lastName,
-      firstName,
-      email,
-      dateOfBirth,
-      street,
-      zip,
-      city,
-      memberSignature,
-      isMemberNotAccountHolder,
-      lastNameSepa,
-      firstNameSepa,
-      streetSepa,
-      zipSepa,
-      citySepa,
-      bank, 
-      bic, 
-      iban, 
-      mandate, 
-      sepaSignature) 
-      VALUES 
-      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+  const sql = `
+    insert into membership 
+    (lastName,
+    firstName,
+    email,
+    dateOfBirth,
+    street,
+    zip,
+    city,
+    memberSignature,
+    isMemberNotAccountHolder,
+    lastNameSepa,
+    firstNameSepa,
+    streetSepa,
+    zipSepa,
+    citySepa,
+    bank, 
+    bic, 
+    iban, 
+    mandate, 
+    sepaSignature) 
+    VALUES 
+    (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`;
 
   const values = [
     options.lastName,
@@ -61,7 +56,24 @@ export async function addMembership(options: applyMembershipOptions) {
 
 export async function getMembership() {}
 
-export async function getMemberships() {}
+export async function getMemberships(): Promise<shortMembership[]> {
+  const connection = getConnection();
+
+  const sql = `
+    SELECT id, lastName, firstName
+    FROM membership
+    ORDER BY id`;
+
+  const [rows] = await connection.execute(sql, []);
+
+  return rows as shortMembership[];
+}
+
+interface shortMembership extends RowDataPacket {
+  id: number;
+  lastName: string;
+  firstName: string;
+}
 
 interface membership extends RowDataPacket {
   id: number;

@@ -10,7 +10,11 @@ export function KeycloakNav() {
   return (
     <BootstrapNavbar.Collapse className='justify-content-end'>
       {isLoading ? (
-        <></>
+        <>
+          <BootstrapNavbar.Text>
+            <LoginButton disabled={true}></LoginButton>
+          </BootstrapNavbar.Text>
+        </>
       ) : (
         <>
           {authenticated ? (
@@ -24,7 +28,7 @@ export function KeycloakNav() {
             </>
           ) : (
             <BootstrapNavbar.Text>
-              <LoginButton></LoginButton>
+              <LoginButton disabled={false}></LoginButton>
             </BootstrapNavbar.Text>
           )}
         </>

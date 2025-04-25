@@ -6,7 +6,7 @@ export function KeycloakProvider({ children }: PropsWithChildren) {
   const isRun = useRef<boolean>(false);
   const [keycloak, setKeycloak] = useState<Keycloak | null>(null);
   const [authenticated, setAuthenticated] = useState<boolean>(false);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   useEffect(() => {
     if (isRun.current) return;

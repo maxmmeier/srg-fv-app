@@ -3,26 +3,34 @@ import { Navbar } from './Navbar';
 import { Container } from 'react-bootstrap';
 import { Footer } from './Footer';
 import './Page.css';
+import useKeycloak from '../features/auth/useKeycloak';
 
 interface PageProps {
   header: string;
 }
 
 export function Page({ header, children }: PropsWithChildren<PageProps>) {
+  const { isLoading } = useKeycloak();
   return (
     <>
-      <div className='main-page'>
-        <Navbar />
+      {isLoading ? (
+        <></>
+      ) : (
+        <>
+          <div className='main-page'>
+            <Navbar />
 
-        <Container className='mb-3 mt-2'>
-          <h1>{header}</h1>
-        </Container>
-        <Container className='main-page-container'>{children}</Container>
+            <Container className='mb-3 mt-2'>
+              <h1>{header}</h1>
+            </Container>
+            <Container className='main-page-container'>{children}</Container>
 
-        <Container className='mt-3'>
-          <Footer />
-        </Container>
-      </div>
+            <Container className='mt-3'>
+              <Footer />
+            </Container>
+          </div>
+        </>
+      )}
     </>
   );
 }
