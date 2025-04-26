@@ -2,6 +2,7 @@ import { Router } from 'express';
 import {
   applyMembership,
   getMemberships,
+  getPdf,
 } from '../controllers/membershipControllers';
 import Keycloak, { KeycloakConfig } from 'keycloak-connect';
 
@@ -20,5 +21,6 @@ const keycloak = new Keycloak({}, keycloakConfig);
 
 router.post('/apply', applyMembership);
 router.get('/', keycloak.protect(), getMemberships);
+router.post('/pdf', keycloak.protect(), getPdf);
 
 export default router;

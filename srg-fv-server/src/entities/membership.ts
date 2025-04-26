@@ -1,4 +1,7 @@
-export interface ApplyMembershipOptions {
+import { RowDataPacket } from 'mysql2';
+
+export interface Membership extends RowDataPacket {
+  id: number;
   lastName: string;
   firstName: string;
   email: string;

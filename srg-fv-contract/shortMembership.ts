@@ -1,4 +1,4 @@
-export interface shortMembership {
+export interface ShortMembership {
   id: number;
   lastName: string;
   firstName: string;

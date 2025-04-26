@@ -6,7 +6,7 @@ import { useContainerDimensions } from './WrapperDimensions';
 import './Apply.css';
 import { formatIban, validateIban } from './Iban';
 import axios from 'axios';
-import { applyMembershipOptions } from '../../../../srg-fv-contract/applyMembershipOptions';
+import { ApplyMembershipOptions } from '../../../../srg-fv-contract/applyMembershipOptions';
 
 export function Apply() {
   const [validated, setValidated] = useState(false);
@@ -74,7 +74,7 @@ export function Apply() {
       sepaSignature: sepaSignatureCanvas.current
         ?.getCanvas()
         .toDataURL('image/png'),
-    } as applyMembershipOptions;
+    } as ApplyMembershipOptions;
 
     axios.post(import.meta.env.VITE_BACKEND_URL + 'membership/apply', result);
   }

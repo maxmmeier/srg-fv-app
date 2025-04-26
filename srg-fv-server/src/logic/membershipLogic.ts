@@ -1,8 +1,12 @@
-import { RowDataPacket } from 'mysql2';
-import { applyMembershipOptions } from '../../../srg-fv-contract/applyMembershipOptions';
+import { ApplyMembershipOptions } from '../../../srg-fv-contract/applyMembershipOptions';
+import { GetMembershipPdfOptions } from '../../../srg-fv-contract/getMembershipPdfOptions';
+import { MembershipPdf } from '../../../srg-fv-contract/membershipPdf';
 import { getConnection } from './logicBase';
+import { ShortMembership } from '../entities/shortmembership';
+import PDFDocument from 'pdfkit';
+import { Membership } from '../entities/membership';
 
-export async function addMembership(options: applyMembershipOptions) {
+export async function addMembership(options: ApplyMembershipOptions) {
   const connection = getConnection();
 
   const sql = `
@@ -54,46 +58,43 @@ export async function addMembership(options: applyMembershipOptions) {
   await connection.execute(sql, values);
 }
 
-export async function getMembership() {}
-
-export async function getMemberships(): Promise<shortMembership[]> {
+export async function getMemberships(): Promise<ShortMembership[]> {
   const connection = getConnection();
 
   const sql = `
     SELECT id, lastName, firstName
     FROM membership
-    ORDER BY id`;
+    ORDER BY lastName`;
 
-  const [rows] = await connection.execute(sql, []);
+  const [rows] = await connection.execute<ShortMembership[]>(sql, []);
 
-  return rows as shortMembership[];
+  return rows;
 }
 
-interface shortMembership extends RowDataPacket {
-  id: number;
-  lastName: string;
-  firstName: string;
-}
+export async function getPdf(
+  options: GetMembershipPdfOptions,
+): Promise<MembershipPdf> {
+  const connection = getConnection();
 
-interface membership extends RowDataPacket {
-  id: number;
-  lastName: string;
-  firstName: string;
-  email: string;
-  dateOfBirth: string;
-  street: string;
-  zip: string;
-  city: string;
-  memberSignature: string;
-  isMemberNotAccountHolder: boolean;
-  lastNameSepa: string | undefined;
-  firstNameSepa: string | undefined;
-  streetSepa: string | undefined;
-  zipSepa: string | undefined;
-  citySepa: string | undefined;
-  bank: string;
-  bic: string;
-  iban: string;
-  mandate: string;
-  sepaSignature: string;
+  const sql = `
+    SELECT *
+    FROM membership
+    WHERE id = ?`;
+
+  const [rows] = await connection.execute<Membership[]>(sql, [options.id]);
+  const membership = rows[0];
+
+  const doc = new PDFDocument();
+
+  doc.text('Hello world!');
+
+  doc.end();
+
+  const data = doc.read();
+
+  return {
+    id: options.id,
+    base64: data.toString('base64'),
+    fileName: `${membership.firstName}_${membership.lastName}.pdf`,
+  } as MembershipPdf;
 }

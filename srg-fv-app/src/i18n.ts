@@ -61,6 +61,7 @@ i18n.use(initReactI18next).init({
         members: 'Mitglieder',
         pageNotFound: 'Die Seite wurde nicht gefunden',
         id: '#',
+        downloadPdf: 'Donwload PDF',
       },
     },
   },
