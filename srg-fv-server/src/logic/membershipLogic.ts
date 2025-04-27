@@ -3,8 +3,8 @@ import { GetMembershipPdfOptions } from '../../../srg-fv-contract/getMembershipP
 import { MembershipPdf } from '../../../srg-fv-contract/membershipPdf';
 import { getConnection } from './logicBase';
 import { ShortMembership } from '../entities/shortmembership';
-import PDFDocument from 'pdfkit';
 import { Membership } from '../entities/membership';
+import { generateMembershipPdf } from '../helper/membershipPdfHelper';
 
 export async function addMembership(options: ApplyMembershipOptions) {
   const connection = getConnection();
@@ -84,17 +84,5 @@ export async function getPdf(
   const [rows] = await connection.execute<Membership[]>(sql, [options.id]);
   const membership = rows[0];
 
-  const doc = new PDFDocument();
-
-  doc.text('Hello world!');
-
-  doc.end();
-
-  const data = doc.read();
-
-  return {
-    id: options.id,
-    base64: data.toString('base64'),
-    fileName: `${membership.firstName}_${membership.lastName}.pdf`,
-  } as MembershipPdf;
+  return generateMembershipPdf(membership);
 }

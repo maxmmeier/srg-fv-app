@@ -60,7 +60,7 @@ export function Apply() {
       city,
       memberSignature: memberSignatureCanvas.current
         ?.getCanvas()
-        .toDataURL('image/png'),
+        .toDataURL('image/jpeg'),
       isMemberNotAccountHolder,
       lastNameSepa,
       firstNameSepa,
@@ -73,7 +73,7 @@ export function Apply() {
       mandate,
       sepaSignature: sepaSignatureCanvas.current
         ?.getCanvas()
-        .toDataURL('image/png'),
+        .toDataURL('image/jpeg'),
     } as ApplyMembershipOptions;
 
     axios.post(import.meta.env.VITE_BACKEND_URL + 'membership/apply', result);
@@ -213,6 +213,7 @@ export function Apply() {
                 }
                 ref={canvasWrapperMember}>
                 <SignatureCanvas
+                  backgroundColor='rgb(255,255,255)'
                   ref={memberSignatureCanvas}
                   canvasProps={{
                     width: memberSignature.width,
@@ -441,6 +442,7 @@ export function Apply() {
                 }
                 ref={canvasWrapperSepa}>
                 <SignatureCanvas
+                  backgroundColor='rgb(255,255,255)'
                   ref={sepaSignatureCanvas}
                   canvasProps={{
                     width: sepaSignature.width,
