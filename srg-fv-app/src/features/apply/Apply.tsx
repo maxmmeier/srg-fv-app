@@ -40,13 +40,45 @@ export function Apply() {
 
   const { t } = useTranslation();
 
+  function checkValidity() {
+    if (!lastName) return false;
+    if (!firstName) return false;
+    if (!email) return false;
+    if (
+      !dateOfBirth ||
+      new Date(dateOfBirth) >
+        new Date(
+          new Date().getFullYear() - 10,
+          new Date().getMonth(),
+          new Date().getDay(),
+        )
+    ) {
+      return false;
+    }
+    if (!street) return false;
+    if (!zip) return false;
+    if (!city) return false;
+    if (!isMemberSignatureSet) return false;
+    if (isMemberNotAccountHolder && !lastNameSepa) return false;
+    if (isMemberNotAccountHolder && !firstNameSepa) return false;
+    if (isMemberNotAccountHolder && !streetSepa) return false;
+    if (isMemberNotAccountHolder && !zipSepa) return false;
+    if (isMemberNotAccountHolder && !citySepa) return false;
+    if (!bank) return false;
+    if (!bic) return false;
+    if (!validateIban(iban)) return false;
+    if (!mandate) return false;
+    if (!isSepaSignatureSet) return false;
+
+    return true;
+  }
+
   function onSubmit(e: FormEvent<HTMLFormElement>) {
-    const form = e.currentTarget;
     e.preventDefault();
     e.stopPropagation();
     setValidated(true);
 
-    if (form.checkValidity() === false) {
+    if (!checkValidity()) {
       return;
     }
 
@@ -179,7 +211,7 @@ export function Apply() {
           <Col>
             <Form.Group className='mb-3'>
               <Form.Label>{t('zipAndCity')}</Form.Label>
-              <InputGroup>
+              <InputGroup hasValidation>
                 <Form.Control
                   value={zip}
                   onChange={(e) => setZip(e.target.value)}
@@ -332,7 +364,7 @@ export function Apply() {
               <Col>
                 <Form.Group className='mb-3'>
                   <Form.Label>{t('zipAndCity')}</Form.Label>
-                  <InputGroup>
+                  <InputGroup hasValidation>
                     <Form.Control
                       value={zipSepa}
                       onChange={(e) => setZipSepa(e.target.value)}
