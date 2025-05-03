@@ -1,10 +1,14 @@
 import { ApplyMembershipOptions } from '../../../srg-fv-contract/applyMembershipOptions';
 import { GetMembershipPdfOptions } from '../../../srg-fv-contract/getMembershipPdfOptions';
+import { ShortMembershipList } from '../../../srg-fv-contract/shortMembershipList';
 import { MembershipPdf } from '../../../srg-fv-contract/membershipPdf';
 import { getConnection } from './logicBase';
 import { ShortMembership } from '../entities/shortmembership';
 import { Membership } from '../entities/membership';
 import { generateMembershipPdf } from '../helper/membershipPdfHelper';
+import { RowDataPacket } from 'mysql2';
+
+const itemsPerPage = 15;
 
 export async function addMembership(options: ApplyMembershipOptions) {
   const connection = getConnection();
@@ -58,17 +62,36 @@ export async function addMembership(options: ApplyMembershipOptions) {
   await connection.execute(sql, values);
 }
 
-export async function getMemberships(): Promise<ShortMembership[]> {
+export async function getMemberships(
+  page: number,
+): Promise<ShortMembershipList> {
   const connection = getConnection();
 
   const sql = `
     SELECT id, lastName, firstName
     FROM membership
-    ORDER BY lastName`;
+    ORDER BY lastName
+    LIMIT ? OFFSET ?`;
 
-  const [rows] = await connection.execute<ShortMembership[]>(sql, []);
+  const offset = (page - 1) * itemsPerPage;
 
-  return rows;
+  const [rows] = await connection.execute<ShortMembership[]>(sql, [
+    itemsPerPage.toString(),
+    offset.toString(),
+  ]);
+
+  const sql2 = `
+    SELECT COUNT(*) as "count"
+    FROM membership
+  `;
+
+  const [rows2] = await connection.execute<RowDataPacket[]>(sql2, []);
+
+  return {
+    memberships: rows,
+    currentPage: page,
+    maxPage: Math.ceil(rows2[0]['count'] / itemsPerPage),
+  } as ShortMembershipList;
 }
 
 export async function getPdf(

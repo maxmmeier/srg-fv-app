@@ -21,7 +21,7 @@ const keycloakConfig = {
 const keycloak = new Keycloak({}, keycloakConfig);
 
 router.post('/apply', applyMembership);
-router.get('/', keycloak.protect(), getMemberships);
+router.get('/:page', keycloak.protect(), getMemberships);
 router.post('/pdf', keycloak.protect(), getPdf);
 router.delete('/:id', keycloak.protect(), deleteMembership);
 

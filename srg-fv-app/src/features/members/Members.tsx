@@ -7,11 +7,14 @@ import useKeycloak from '../auth/useKeycloak';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
 import { DownloadPdfButton } from './DownloadPdfButton';
 import { DeleteButton } from './DeleteButton';
+import { Pagination } from '../../shared/Pagination';
 
 export function Members() {
   const { t } = useTranslation();
   const { keycloak } = useKeycloak();
   const [members, setMembers] = useState<ShortMembership[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [maxPage, setMaxPage] = useState(1);
   const [show, setShow] = useState(false);
   const [deleteMemberId, setDeleteMemberId] = useState<number | null>(null);
 
@@ -23,11 +26,16 @@ export function Members() {
 
   useEffect(() => {
     axios
-      .get(import.meta.env.VITE_BACKEND_URL + 'membership', config)
+      .get(
+        import.meta.env.VITE_BACKEND_URL + 'membership/' + currentPage,
+        config,
+      )
       .then((res) => {
-        setMembers(res.data as ShortMembership[]);
+        setMembers(res.data.memberships as ShortMembership[]);
+        setMaxPage(res.data.maxPage);
+        setCurrentPage(res.data.currentPage);
       });
-  }, []);
+  }, [currentPage]);
 
   return (
     <>
@@ -58,6 +66,11 @@ export function Members() {
           ))}
         </tbody>
       </Table>
+
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        maxPage={maxPage}></Pagination>
 
       <ConfirmationModal
         show={show}
