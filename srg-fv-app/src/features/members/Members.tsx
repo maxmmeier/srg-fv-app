@@ -1,12 +1,12 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ShortMembership } from '../../../../srg-fv-contract/shortMembership';
-import { GetMembershipPdfOptions } from '../../../../srg-fv-contract/getMembershipPdfOptions';
-import { MembershipPdf } from '../../../../srg-fv-contract/membershipPdf';
-import { Button, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useKeycloak from '../auth/useKeycloak';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
+import { DownloadPdfButton } from './DownloadPdfButton';
+import { DeleteButton } from './DeleteButton';
 
 export function Members() {
   const { t } = useTranslation();
@@ -29,26 +29,6 @@ export function Members() {
       });
   }, []);
 
-  async function downloadPdf(id: number) {
-    const body = {
-      id: id,
-    } as GetMembershipPdfOptions;
-
-    axios({
-      method: 'post',
-      url: import.meta.env.VITE_BACKEND_URL + 'membership/pdf',
-      headers: config.headers,
-      data: body,
-    }).then((res) => {
-      const result = res.data as MembershipPdf;
-      const source = `data:application/pdf;base64,${result.base64}`;
-      const downloadLink = document.createElement('a');
-      downloadLink.href = source;
-      downloadLink.download = result.fileName;
-      downloadLink.click();
-    });
-  }
-
   return (
     <>
       <Table>
@@ -65,22 +45,14 @@ export function Members() {
               <td>{member.firstName}</td>
               <td>{member.lastName}</td>
               <td>
-                <Button
-                  variant='secondary'
-                  className='btn-sm'
-                  onClick={() => downloadPdf(member.id)}>
-                  {t('downloadPdf')}
-                </Button>
+                <DownloadPdfButton
+                  id={member.id}
+                  config={config}></DownloadPdfButton>
 
-                <Button
-                  variant='danger'
-                  className='btn-sm ms-3'
-                  onClick={() => {
-                    setDeleteMemberId(member.id);
-                    setShow(true);
-                  }}>
-                  {t('delete')}
-                </Button>
+                <DeleteButton
+                  id={member.id}
+                  setDeleteMemberId={setDeleteMemberId}
+                  setShow={setShow}></DeleteButton>
               </td>
             </tr>
           ))}
