@@ -1,5 +1,5 @@
 import { Button } from 'react-bootstrap';
-import useKeycloak from '../features/auth/useKeycloak';
+import useKeycloak from './useKeycloak';
 import { useTranslation } from 'react-i18next';
 
 export function LoginButton({ disabled = false }: { disabled: boolean }) {

@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import { ShortMembership } from '../../../../srg-fv-contract/shortMembership';
 import { Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
-import useKeycloak from '../auth/useKeycloak';
+import useKeycloak from '../../shared/useKeycloak';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
 import { DownloadPdfButton } from './DownloadPdfButton';
 import { DeleteButton } from './DeleteButton';

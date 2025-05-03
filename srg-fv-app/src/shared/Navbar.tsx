@@ -1,7 +1,7 @@
 import { Container, Nav, Navbar as BootstrapNavbar } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import { KeycloakNav } from './KeycloakNav';
-import useKeycloak from '../features/auth/useKeycloak';
+import useKeycloak from './useKeycloak';
 
 export function Navbar() {
   const { t } = useTranslation();

@@ -1,7 +1,7 @@
 import { Navbar as BootstrapNavbar } from 'react-bootstrap';
 import { LoginButton } from './LoginButton';
 import { LogoutButton } from './LogoutButton';
-import useKeycloak from '../features/auth/useKeycloak';
+import useKeycloak from './useKeycloak';
 import { UserInformation } from './UserInformation';
 
 export function KeycloakNav() {

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import useKeycloak from '../features/auth/useKeycloak';
+import useKeycloak from './useKeycloak';
 
 export function UserInformation() {
   const isRun = useRef<boolean>(false);

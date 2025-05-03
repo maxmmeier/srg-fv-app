@@ -1,14 +1,15 @@
 import { createRoot } from 'react-dom/client';
-import { App } from './App.tsx';
 import { BrowserRouter, Routes, Route } from 'react-router';
 import { Apply } from './features/apply/Apply.tsx';
 import { Page } from './shared/Page.tsx';
 
 import i18n from './i18n.ts';
 import './i18n.ts';
-import { KeycloakProvider } from './features/auth/KeycloakProvider.tsx';
+import { KeycloakProvider } from './shared/KeycloakProvider.tsx';
 import { Members } from './features/members/Members.tsx';
 import { NotFound } from './shared/NotFound.tsx';
+import { Home } from './features/home/Home.tsx';
+import { AuthRequired } from './shared/AuthRequired.tsx';
 
 createRoot(document.getElementById('root')!).render(
   <KeycloakProvider>
@@ -17,17 +18,19 @@ createRoot(document.getElementById('root')!).render(
         <Route
           path='/'
           element={
-            <Page header='Hello World'>
-              <App />
+            <Page header={i18n.t('supportAssociationSrgStuttgart')}>
+              <Home />
             </Page>
           }
         />
         <Route
           path='mitglieder'
           element={
-            <Page header={i18n.t('members')}>
-              <Members />
-            </Page>
+            <AuthRequired>
+              <Page header={i18n.t('members')}>
+                <Members />
+              </Page>
+            </AuthRequired>
           }
         />
         <Route

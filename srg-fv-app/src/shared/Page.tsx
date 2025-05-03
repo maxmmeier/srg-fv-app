@@ -3,7 +3,7 @@ import { Navbar } from './Navbar';
 import { Container } from 'react-bootstrap';
 import { Footer } from './Footer';
 import './Page.css';
-import useKeycloak from '../features/auth/useKeycloak';
+import useKeycloak from './useKeycloak';
 
 interface PageProps {
   header: string;
