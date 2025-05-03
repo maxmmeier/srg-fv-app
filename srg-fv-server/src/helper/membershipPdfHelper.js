@@ -124,7 +124,13 @@ export function generateMembershipPdf(membership) {
 
   doc.moveDown();
 
-  doc.text('Stuttgart, den XX.XX.XXXX');
+  doc.text(
+    `Stuttgart, den ${membership.created.toLocaleDateString('de-DE', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })}`,
+  );
 
   doc.image(membership.memberSignature, 80, 310, {
     height: 50,
@@ -302,7 +308,13 @@ export function generateMembershipPdf(membership) {
 
   doc.moveDown();
 
-  doc.text('Stuttgart, den XX.XX.XXXX');
+  doc.text(
+    `Stuttgart, den ${membership.created.toLocaleDateString('de-DE', {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+    })}`,
+  );
 
   doc.image(membership.sepaSignature, 80, 660, {
     height: 50,

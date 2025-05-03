@@ -8,6 +8,7 @@ export function LogoutButton() {
 
   return (
     <Button
+      variant='secondary'
       onClick={() => {
         keycloak?.logout();
       }}>

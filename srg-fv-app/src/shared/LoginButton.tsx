@@ -8,6 +8,7 @@ export function LoginButton({ disabled = false }: { disabled: boolean }) {
 
   return (
     <Button
+      variant='secondary'
       disabled={disabled}
       onClick={() => {
         keycloak?.login();

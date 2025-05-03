@@ -21,4 +21,5 @@ export interface Membership extends RowDataPacket {
   iban: string;
   mandate: string;
   sepaSignature: string;
+  created: string;
 }
