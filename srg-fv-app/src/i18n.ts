@@ -55,7 +55,7 @@ i18n.use(initReactI18next).init({
         bicFeedback: 'Bitte BIC eintragen!',
         ibanFeedback: 'Bitte IBAN eintragen!',
         mandateFeedback: 'Bitte Mandatsreferenz eintragen!',
-        signatureFeedback: 'Bitte Unterschreiben!',
+        signatureFeedback: 'Bitte unterschreiben!',
         login: 'Login',
         logout: 'Logout',
         members: 'Mitglieder',
