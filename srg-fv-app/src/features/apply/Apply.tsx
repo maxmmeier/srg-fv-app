@@ -1,4 +1,4 @@
-import { FormEvent, useRef, useState } from 'react';
+import { FormEvent, useEffect, useRef, useState } from 'react';
 import { Button, Col, Form, InputGroup, Row } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import SignatureCanvas from 'react-signature-canvas';
@@ -37,8 +37,19 @@ export function Apply() {
   const sepaSignatureCanvas = useRef<SignatureCanvas>(null);
   const [isMemberSignatureSet, setIsMemberSignatureSet] = useState(false);
   const [isSepaSignatureSet, setIsSepaSignatureSet] = useState(false);
+  const [refAquired, setRefAquired] = useState(false);
 
   const { t } = useTranslation();
+
+  useEffect(() => {
+    if (!memberSignatureCanvas.current || !sepaSignatureCanvas.current) {
+      return;
+    }
+    setRefAquired(true);
+
+    memberSignatureCanvas.current?.clear();
+    sepaSignatureCanvas.current?.clear();
+  }, [refAquired]);
 
   function checkValidity() {
     if (!lastName) return false;
