@@ -6,6 +6,7 @@ import {
   addMembership as internalAddMemebership,
   getMemberships as internalGetMemberships,
   getPdf as internalGetPdf,
+  deleteMembership as internalDeleteMembership,
 } from '../logic/membershipLogic';
 
 dotenv.config();
@@ -47,6 +48,22 @@ export async function getPdf(req: Request, res: Response, next: NextFunction) {
     var pdf = await internalGetPdf(options);
 
     res.status(200).json(pdf);
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteMembership(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const id = parseInt(req.params.id);
+
+    await internalDeleteMembership(id);
+
+    res.status(204).json();
   } catch (error) {
     next(error);
   }

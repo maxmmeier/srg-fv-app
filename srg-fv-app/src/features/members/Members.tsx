@@ -6,11 +6,14 @@ import { MembershipPdf } from '../../../../srg-fv-contract/membershipPdf';
 import { Button, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useKeycloak from '../auth/useKeycloak';
+import { ConfirmationModal } from '../../shared/ConfirmationModal';
 
 export function Members() {
   const { t } = useTranslation();
   const { keycloak } = useKeycloak();
   const [members, setMembers] = useState<ShortMembership[]>([]);
+  const [show, setShow] = useState(false);
+  const [deleteMemberId, setDeleteMemberId] = useState<number | null>(null);
 
   const config = {
     headers: {
@@ -68,11 +71,45 @@ export function Members() {
                   onClick={() => downloadPdf(member.id)}>
                   {t('downloadPdf')}
                 </Button>
+
+                <Button
+                  variant='danger'
+                  className='btn-sm ms-3'
+                  onClick={() => {
+                    setDeleteMemberId(member.id);
+                    setShow(true);
+                  }}>
+                  {t('delete')}
+                </Button>
               </td>
             </tr>
           ))}
         </tbody>
       </Table>
+
+      <ConfirmationModal
+        show={show}
+        title={t('deleteMemberTitle', {
+          name: `${members.find((m) => m.id == deleteMemberId)?.lastName}, ${members.find((m) => m.id == deleteMemberId)?.firstName}`,
+        })}
+        message={t('deleteMemberMessage', {
+          name: `${members.find((m) => m.id == deleteMemberId)?.lastName}, ${members.find((m) => m.id == deleteMemberId)?.firstName}`,
+        })}
+        buttonText={t('delete')}
+        handleClose={() => {
+          setShow(false);
+        }}
+        handleConfirm={() => {
+          setShow(false);
+          axios
+            .delete(
+              import.meta.env.VITE_BACKEND_URL + 'membership/' + deleteMemberId,
+              config,
+            )
+            .then(() => {
+              setMembers(members.filter((m) => m.id !== deleteMemberId));
+            });
+        }}></ConfirmationModal>
     </>
   );
 }

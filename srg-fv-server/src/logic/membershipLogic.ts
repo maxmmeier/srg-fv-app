@@ -86,3 +86,16 @@ export async function getPdf(
 
   return generateMembershipPdf(membership);
 }
+
+export async function deleteMembership(id: number) {
+  const connection = getConnection();
+
+  const sql = `
+    DELETE
+    FROM membership
+    WHERE id = ?`;
+
+  await connection.execute(sql, [id]);
+
+  return;
+}

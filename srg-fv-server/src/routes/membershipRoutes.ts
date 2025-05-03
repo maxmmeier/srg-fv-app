@@ -3,6 +3,7 @@ import {
   applyMembership,
   getMemberships,
   getPdf,
+  deleteMembership,
 } from '../controllers/membershipControllers';
 import Keycloak, { KeycloakConfig } from 'keycloak-connect';
 
@@ -22,5 +23,6 @@ const keycloak = new Keycloak({}, keycloakConfig);
 router.post('/apply', applyMembership);
 router.get('/', keycloak.protect(), getMemberships);
 router.post('/pdf', keycloak.protect(), getPdf);
+router.delete('/:id', keycloak.protect(), deleteMembership);
 
 export default router;
