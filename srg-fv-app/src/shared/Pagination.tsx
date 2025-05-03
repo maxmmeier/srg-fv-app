@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { Pagination as BootstapPagination } from 'react-bootstrap';
 
 export function Pagination({
@@ -10,6 +10,12 @@ export function Pagination({
   setCurrentPage: Dispatch<SetStateAction<number>>;
   maxPage: number;
 }) {
+  const [items, setItems] = useState<number[]>([]);
+
+  useEffect(() => {
+    setItems(Array.from({ length: 7 }, (_, i) => currentPage + i - 3));
+  }, [currentPage]);
+
   return (
     <BootstapPagination>
       <BootstapPagination.First
@@ -20,7 +26,16 @@ export function Pagination({
         onClick={() =>
           setCurrentPage(currentPage - 1)
         }></BootstapPagination.Prev>
-      {Array.from({ length: maxPage }, (_, i) => i + 1).map((num) => {
+      {items[0] > 1 && (
+        <BootstapPagination.Ellipsis disabled></BootstapPagination.Ellipsis>
+      )}
+      {items.map((num) => {
+        if (num < 1) {
+          return;
+        }
+        if (num > maxPage) {
+          return;
+        }
         return (
           <BootstapPagination.Item
             key={num}
@@ -30,6 +45,9 @@ export function Pagination({
           </BootstapPagination.Item>
         );
       })}
+      {items[items.length - 1] < maxPage && (
+        <BootstapPagination.Ellipsis disabled></BootstapPagination.Ellipsis>
+      )}
       <BootstapPagination.Next
         disabled={currentPage === maxPage}
         onClick={() =>
