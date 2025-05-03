@@ -1,6 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import membershipRoutes from './routes/membershipRoutes';
+import appointmentRoutes from './routes/appointmentRoutes';
 import { errorHandler } from './middlewares/errorHandler';
 import dotenv from 'dotenv';
 import Keycloak, { KeycloakConfig } from 'keycloak-connect';
@@ -35,6 +36,7 @@ app.use(express.json());
 
 // Routes
 app.use('/api/membership', membershipRoutes);
+app.use('/api/appointment', appointmentRoutes);
 
 // Global error handler (should be after routes)
 app.use(errorHandler);

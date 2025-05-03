@@ -5,20 +5,10 @@ import {
   getPdf,
   deleteMembership,
 } from '../controllers/membershipControllers';
-import Keycloak, { KeycloakConfig } from 'keycloak-connect';
+import { getKeycloak } from './routeBase';
 
 const router = Router();
-
-const keycloakConfig = {
-  'confidential-port': 0,
-  realm: process.env.KEYCLOAK_REALM,
-  'auth-server-url': `${process.env.KEYCLOAK_URL}`,
-  'ssl-required': 'external',
-  resource: process.env.KEYCLOAK_CLIENT,
-  'bearer-only': true,
-} as KeycloakConfig;
-
-const keycloak = new Keycloak({}, keycloakConfig);
+const keycloak = getKeycloak();
 
 router.post('/apply', applyMembership);
 router.get('/:page', keycloak.protect(), getMemberships);
