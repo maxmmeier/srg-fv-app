@@ -39,7 +39,7 @@ export function Members() {
 
   return (
     <>
-      <Table>
+      <Table striped hover>
         <thead>
           <tr>
             <th>{t('firstname')}</th>
@@ -52,7 +52,7 @@ export function Members() {
             <tr key={member.id}>
               <td>{member.firstName}</td>
               <td>{member.lastName}</td>
-              <td>
+              <td className='text-end'>
                 <DownloadPdfButton
                   id={member.id}
                   config={config}></DownloadPdfButton>
