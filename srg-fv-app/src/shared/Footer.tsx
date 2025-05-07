@@ -5,7 +5,7 @@ export function Footer() {
 
   return (
     <>
-      <span>{t('copyRightSupportAssociation')}</span>
+      <span>&copy;&nbsp;{t('copyRightSupportAssociation')}</span>
 
       <span className='float-end'>
         <a

@@ -90,7 +90,7 @@ i18n.use(initReactI18next).init({
         date: 'Datum',
         appointmentName: 'Termin',
         location: 'Ort',
-        copyRightSupportAssociation: '© Förderverein SRG Stuttgart',
+        copyRightSupportAssociation: 'Förderverein SRG Stuttgart',
         privacy: 'Datenschutz',
         imprint: 'Impressum',
         source: 'Source',
