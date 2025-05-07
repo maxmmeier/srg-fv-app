@@ -42,6 +42,22 @@ createRoot(document.getElementById('root')!).render(
           }
         />
         <Route
+          path='datenschutz'
+          element={
+            <Page header={i18n.t('privacy')}>
+              <>TODO</>
+            </Page>
+          }
+        />
+        <Route
+          path='impressum'
+          element={
+            <Page header={i18n.t('imprint')}>
+              <>TODO</>
+            </Page>
+          }
+        />
+        <Route
           path='*'
           element={
             <Page header=':('>
