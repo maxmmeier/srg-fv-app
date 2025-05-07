@@ -18,6 +18,19 @@ export async function addAppointment(options: AddAppointmentOptions) {
   await connection.execute(sql, values);
 }
 
+export async function deleteAppointment(id: number) {
+  const connection = getConnection();
+
+  const sql = `
+    DELETE
+    FROM appointment
+    WHERE id = ?`;
+
+  const values = [id];
+
+  await connection.execute(sql, values);
+}
+
 export async function getAppointments(): Promise<Appointment[]> {
   const connection = getConnection();
 

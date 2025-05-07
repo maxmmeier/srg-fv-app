@@ -3,6 +3,7 @@ import { AddAppointmentOptions } from '../../../srg-fv-contract/addAppointmentOp
 import dotenv from 'dotenv';
 import {
   addAppointment as internalAddAppointment,
+  deleteAppointment as internalDeleteAppointment,
   getAppointments as internalGetAppointments,
 } from '../logic/appointmentLogic';
 
@@ -19,6 +20,22 @@ export async function addAppointment(
     await internalAddAppointment(options);
 
     res.status(201).json();
+  } catch (error) {
+    next(error);
+  }
+}
+
+export async function deleteAppointment(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  try {
+    const id = parseInt(req.params.id);
+
+    await internalDeleteAppointment(id);
+
+    res.status(204).json();
   } catch (error) {
     next(error);
   }
