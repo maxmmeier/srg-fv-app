@@ -4,11 +4,11 @@ import { useTranslation } from 'react-i18next';
 
 export function DeleteButton({
   id,
-  setDeleteMemberId,
+  setDeleteId,
   setShow,
 }: {
   id: number;
-  setDeleteMemberId: Dispatch<SetStateAction<number | null>>;
+  setDeleteId: Dispatch<SetStateAction<number | null>>;
   setShow: Dispatch<SetStateAction<boolean>>;
 }) {
   const { t } = useTranslation();
@@ -18,7 +18,7 @@ export function DeleteButton({
       variant='danger'
       className='btn-sm ms-3'
       onClick={() => {
-        setDeleteMemberId(id);
+        setDeleteId(id);
         setShow(true);
       }}>
       {t('delete')}

@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 import useKeycloak from '../../shared/useKeycloak';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
 import { DownloadPdfButton } from './DownloadPdfButton';
-import { DeleteButton } from './DeleteButton';
+import { DeleteButton } from '../../shared/DeleteButton';
 import { Pagination } from '../../shared/Pagination';
 
 export function Members() {
@@ -59,7 +59,7 @@ export function Members() {
 
                 <DeleteButton
                   id={member.id}
-                  setDeleteMemberId={setDeleteMemberId}
+                  setDeleteId={setDeleteMemberId}
                   setShow={setShow}></DeleteButton>
               </td>
             </tr>

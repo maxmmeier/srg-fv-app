@@ -94,6 +94,7 @@ i18n.use(initReactI18next).init({
         privacy: 'Datenschutz',
         imprint: 'Impressum',
         source: 'Source',
+        add: 'Hinzufügen',
       },
     },
   },
