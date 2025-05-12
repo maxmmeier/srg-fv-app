@@ -6,7 +6,7 @@ export function Board() {
   const { t } = useTranslation();
 
   return (
-    <Row xs={1} sm={1} md={2} lg={2} xl={4} className='mb-3'>
+    <Row xs={1} sm={1} md={2} lg={2} xl={5} className='mb-3'>
       <Col className='pb-3'>
         <BoardCard
           imageName='img-1.jpg'
@@ -41,20 +41,6 @@ export function Board() {
           name={t('max')}
           role={t('assessor')}
           club={t('sgUntertürkheim')}></BoardCard>
-      </Col>
-      <Col className='pb-3'>
-        <BoardCard
-          imageName='img-6.jpg'
-          name={t('hans')}
-          role={t('auditor')}
-          club={t('fvGermaniaDegerloch')}></BoardCard>
-      </Col>
-      <Col className='pb-3'>
-        <BoardCard
-          imageName='img-7.jpg'
-          name={t('richard')}
-          role={t('auditor')}
-          club={t('tvEchterdingen')}></BoardCard>
       </Col>
     </Row>
   );
