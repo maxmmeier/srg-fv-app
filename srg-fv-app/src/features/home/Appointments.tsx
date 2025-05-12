@@ -7,6 +7,7 @@ import useKeycloak from '../../shared/useKeycloak';
 import { AddButton } from '../../shared/AddButton';
 import { DeleteButton } from '../../shared/DeleteButton';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
+import { AddAppointmentModal } from './AddAppointmentModal';
 
 export function Appointments() {
   const { t } = useTranslation();
@@ -24,10 +25,14 @@ export function Appointments() {
     },
   };
 
-  useEffect(() => {
+  const readAppointments = () => {
     axios.get(import.meta.env.VITE_BACKEND_URL + 'appointment').then((res) => {
       setAppointments(res.data as Appointment[]);
     });
+  };
+
+  useEffect(() => {
+    readAppointments();
   }, []);
 
   return (
@@ -101,6 +106,23 @@ export function Appointments() {
               );
             });
         }}></ConfirmationModal>
+
+      <AddAppointmentModal
+        show={showAdd}
+        handleClose={() => {
+          setShowAdd(false);
+        }}
+        handleConfirm={(body) => {
+          setShowAdd(false);
+          axios({
+            method: 'post',
+            url: import.meta.env.VITE_BACKEND_URL + 'appointment/',
+            headers: config.headers,
+            data: body,
+          }).then(() => {
+            readAppointments();
+          });
+        }}></AddAppointmentModal>
     </>
   );
 }
