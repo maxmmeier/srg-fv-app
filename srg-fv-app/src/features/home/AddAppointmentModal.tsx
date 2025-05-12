@@ -29,7 +29,6 @@ export function AddAppointmentModal({
       return;
     }
 
-    console.log(date, time, appointmentName, location);
     handleConfirm({
       timestamp: new Date(`${date} ${time}`)
         .toISOString()
