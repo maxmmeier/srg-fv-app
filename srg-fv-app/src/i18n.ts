@@ -101,6 +101,8 @@ i18n.use(initReactI18next).init({
         appointmentNameFeedback: 'Bitte Termin eintragen!',
         locationFeedback: 'Bitte Ort eintragen!',
         dateFeedback: 'Bitte Datum eintragen!',
+        thankYou:
+          'Dein Antrag wurde erfolgreich entgegen genommen. Danke für Deinen Beitrag!',
       },
     },
   },
