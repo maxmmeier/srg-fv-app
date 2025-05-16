@@ -22,6 +22,10 @@ export function KeycloakProvider({ children }: PropsWithChildren) {
       };
       const keycloakInstance: Keycloak = new Keycloak(keycloackConfig);
 
+      keycloakInstance.onTokenExpired = async () => {
+        await keycloakInstance.updateToken();
+      };
+
       keycloakInstance
         .init({
           onLoad: 'check-sso',
