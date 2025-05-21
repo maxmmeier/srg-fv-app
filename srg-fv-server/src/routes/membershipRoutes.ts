@@ -11,7 +11,7 @@ const router = Router();
 const keycloak = getKeycloak();
 
 router.post('/apply', applyMembership);
-router.get('/:page', keycloak.protect(), getMemberships);
+router.get('/', keycloak.protect(), getMemberships);
 router.post('/pdf', keycloak.protect(), getPdf);
 router.delete('/:id', keycloak.protect(), deleteMembership);
 

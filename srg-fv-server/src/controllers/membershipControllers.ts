@@ -33,9 +33,10 @@ export async function getMemberships(
   next: NextFunction,
 ) {
   try {
-    const page = parseInt(req.params.page);
+    const page = parseInt(req.query.page as string);
+    const search = decodeURI(req.query.search as string);
 
-    var members = await internalGetMemberships(page);
+    var members = await internalGetMemberships(page, search);
 
     res.status(200).json(members);
   } catch (error) {

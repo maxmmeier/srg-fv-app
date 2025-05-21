@@ -98,6 +98,7 @@ i18n.use(initReactI18next).init({
         dateFeedback: 'Bitte Datum eintragen!',
         thankYou:
           'Dein Antrag wurde erfolgreich entgegen genommen. Danke für Deinen Beitrag!',
+        search: 'Suchen',
       },
     },
   },

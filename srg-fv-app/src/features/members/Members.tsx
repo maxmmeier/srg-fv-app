@@ -1,19 +1,21 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 import { ShortMembership } from '../../../../srg-fv-contract/shortMembership';
-import { Table } from 'react-bootstrap';
+import { Col, Form, Row, Table } from 'react-bootstrap';
 import { useTranslation } from 'react-i18next';
 import useKeycloak from '../../shared/useKeycloak';
 import { ConfirmationModal } from '../../shared/ConfirmationModal';
 import { DownloadPdfButton } from './DownloadPdfButton';
 import { DeleteButton } from '../../shared/DeleteButton';
 import { Pagination } from '../../shared/Pagination';
+import { Search } from 'react-bootstrap-icons';
 
 export function Members() {
   const { t } = useTranslation();
   const { keycloak } = useKeycloak();
   const [members, setMembers] = useState<ShortMembership[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [search, setSearch] = useState('');
   const [maxPage, setMaxPage] = useState(1);
   const [show, setShow] = useState(false);
   const [deleteMemberId, setDeleteMemberId] = useState<number | null>(null);
@@ -26,16 +28,23 @@ export function Members() {
 
   useEffect(() => {
     axios
-      .get(
-        import.meta.env.VITE_BACKEND_URL + 'membership/' + currentPage,
-        config,
-      )
+      .get(import.meta.env.VITE_BACKEND_URL + 'membership', {
+        ...config,
+        params: {
+          page: currentPage > 0 ? currentPage : 1,
+          search: encodeURI(search),
+        },
+      })
       .then((res) => {
         setMembers(res.data.memberships as ShortMembership[]);
         setMaxPage(res.data.maxPage);
-        setCurrentPage(res.data.currentPage);
+        setCurrentPage(
+          res.data.currentPage > res.data.maxPage
+            ? res.data.maxPage
+            : res.data.currentPage,
+        );
       });
-  }, [currentPage]);
+  }, [currentPage, search]);
 
   return (
     <>
@@ -44,7 +53,18 @@ export function Members() {
           <tr>
             <th>{t('firstname')}</th>
             <th>{t('lastname')}</th>
-            <th></th>
+            <th style={{ width: '40%' }}>
+              <Form.Group as={Row}>
+                <Form.Label column style={{ maxWidth: 'fit-content' }}>
+                  <Search></Search> {t('search')}
+                </Form.Label>
+                <Col>
+                  <Form.Control
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}></Form.Control>
+                </Col>
+              </Form.Group>
+            </th>
           </tr>
         </thead>
         <tbody>

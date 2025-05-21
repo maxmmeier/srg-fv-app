@@ -64,18 +64,23 @@ export async function addMembership(options: ApplyMembershipOptions) {
 
 export async function getMemberships(
   page: number,
+  search: string,
 ): Promise<ShortMembershipList> {
   const connection = getConnection();
 
   const sql = `
     SELECT id, lastName, firstName
     FROM membership
+    WHERE ? or firstName like ? or lastName like ?
     ORDER BY lastName
     LIMIT ? OFFSET ?`;
 
   const offset = (page - 1) * itemsPerPage;
 
   const [rows] = await connection.execute<ShortMembership[]>(sql, [
+    !search,
+    `%${search}%`,
+    `%${search}%`,
     itemsPerPage.toString(),
     offset.toString(),
   ]);
@@ -83,9 +88,14 @@ export async function getMemberships(
   const sql2 = `
     SELECT COUNT(*) as "count"
     FROM membership
+    WHERE  ? or firstName like ? or lastName like ?
   `;
 
-  const [rows2] = await connection.execute<RowDataPacket[]>(sql2, []);
+  const [rows2] = await connection.execute<RowDataPacket[]>(sql2, [
+    !search,
+    `%${search}%`,
+    `%${search}%`,
+  ]);
 
   return {
     memberships: rows,
